@@ -7,13 +7,18 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Hello, {{ user.username|default:'Guest' }}</h1>
-<p>Welcome to our site</p>
-{% if user.is_authenticated %}
-<a href="{% url 'logout' %}">Выйти из аккаунта</a>
-{% else %}
-<a href="{% url 'signup' %}">Зарегистрироваться</a>
-<a href="{% url 'login' %}">Войти</a>
+<div class="header">
+    <h1>Hello, {{ user.username|default:'Guest' }}</h1>
+    <p>Welcome to our site</p>
+</div>
+<div class="links">
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+    {% else %}
+    <a href="{% url 'signup' %}">Зарегистрироваться</a> |
+    <a href="{% url 'login' %}">Войти</a>
+</div>
+
 {% endif %}
  <div class="main">
      <div>
@@ -36,9 +41,9 @@
                 {% endfor %}
             </table>
          {% else %}
-            <h2>Список фильмов</h2>
+            <h2 class="main__header">Список фильмов</h2>
             <table>
-                <thead class="main__table"><th>Название</th><th>Жанр</th><th>Дата выпуска</th><th>Актеры</th><th>Дата показа</th><th></th></thead>
+                <thead class="main__table"><th>Название</th><th>Жанр</th><th>Дата выпуска</th><th>Актеры</th><th>Дата показа</th></thead>
                 {% for film in films %}
                 <tr class="main__table">
                     <td>{{ film.name }}</td>
