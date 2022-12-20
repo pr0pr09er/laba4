@@ -7,21 +7,26 @@
     <title>Title</title>
 </head>
 <body>
+<h1>Hello, {{ user.username|default:'Guest' }}</h1>
+<p>Welcome to our site</p>
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}">Выйти из аккаунта</a>
+{% else %}
+<a href="{% url 'signup' %}">Зарегистрироваться</a>
+<a href="{% url 'login' %}">Войти</a>
+{% endif %}
  <div class="main">
-     <h1>Hello, {{ user.username|default:'Guest' }}</h1>
-     <p>Welcome to our site</p>
      <div>
          {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Выйти из аккаунта</a>
             <h2>Список фильмов</h2>
             <a href="add/">Добавить фильм</a>
             <table>
-                <thead><th>Название</th><th>Жанр</th><th>Дата выпуска</th><th>Актеры</th><th>Дата показа</th><th></th></thead>
+                <thead class="main__table"><th>Название</th><th>Жанр</th><th>Дата выпуска</th><th>Актеры</th><th>Дата показа</th><th></th></thead>
                 {% for film in films %}
-                <tr>
+                <tr class="main__table">
                     <td>{{ film.name }}</td>
                     <td>{{ film.genre }}</td>
-                    <td>{{ film.issue_name }}</td>
+                    <td>{{ film.issue_date }}</td>
                     <td>{{ film.actors }}</td>
                     <td>{{ film.show_date }}</td>
                     <td>
@@ -31,8 +36,19 @@
                 {% endfor %}
             </table>
          {% else %}
-            <a href="{% url 'signup' %}">Зарегистрироваться</a>
-            <a href="{% url 'login' %}">Войти</a>
+            <h2>Список фильмов</h2>
+            <a href="add/">Добавить фильм</a>
+            <table>
+                <thead class="main__table"><th>Название</th><th>Жанр</th><th>Дата выпуска</th><th>Актеры</th><th>Дата показа</th><th></th></thead>
+                {% for film in films %}
+                <tr class="main__table">
+                    <td>{{ film.name }}</td>
+                    <td>{{ film.genre }}</td>
+                    <td>{{ film.issue_date }}</td>
+                    <td>{{ film.actors }}</td>
+                    <td>{{ film.show_date }}</td>
+                </tr>
+                {% endfor %}
          {% endif %}
      </div>
  </div>

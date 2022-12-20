@@ -14,16 +14,15 @@ def index(request):
 
 
 def add(request):
-    if Category.objects.all().count() == 0:
-        Category.objects.create(genre='Драма')
-        Category.objects.create(genre='Ужасы')
+    default()
     if request.method == 'POST':
         film = Film()
         film.name = request.POST.get('name')
-        film.genre = request.POST.get('genre')
+        film.genre_id = request.POST.get('category')
         film.issue_date = request.POST.get('issue_date')
         film.actors = request.POST.get('actors')
         film.show_date = request.POST.get('show_date')
+        film.save()
         return redirect('home')
     else:
         categories = Category.objects.all()
@@ -36,23 +35,35 @@ def edit(request, id):
         film = Film.objects.get(id=id)
         if request.method == 'POST':
             film.name = request.POST.get('name')
-            film.genre = request.POST.get('genre')
+            film.genre_id = request.POST.get('category')
             film.issue_date = request.POST.get('issue_date')
             film.actors = request.POST.get('actors')
             film.show_date = request.POST.get('show_date')
+            film.save()
             return redirect('home')
         else:
             categories = Category.objects.all()
-            return render(request, 'edit.html', {'film': film, 'categories': categories})
+            return render(request, 'filmApp/edit.html', {'film': film, 'categories': categories})
     except film.DoesNotExist:
         return HttpResponseNotFound('Film not found')
 
 
-def delete(request):
-    return redirect('home')
+def delete(request, id):
+    try:
+        film = Film.objects.get(id=id)
+        film.delete()
+        return redirect('home')
+    except film.DoesNotExist:
+        return HttpResponseNotFound('Film not found')
 
 
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
+
+
+def default():
+    if Category.objects.all().count() == 0:
+        Category.objects.create(genre='драма')
+        Category.objects.create(genre='ужасы')
